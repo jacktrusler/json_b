@@ -1,0 +1,14 @@
+{
+  "name": "jsonbateman",
+  "version": "1.0.0",
+  "description": "That's a bold JSON request cotton, lets see if it pays off for him. ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "J Dizzy",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
