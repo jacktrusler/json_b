@@ -15,4 +15,8 @@ app.get('/', (req,res) => {
 	});
 });
 
+app.get("/something", (req, res) => {
+  res.status(418).set("X-custom-header", "gamer alert");
+});
+
 app.listen(port, () => console.log(`JSON_B running on port: ${port}`));
