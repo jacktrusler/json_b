@@ -42,7 +42,9 @@ app.post("/", (req, res) => {
 });
 
 app.get("/something", (req, res) => {
-  res.status(418).set("X-custom-header", "gamer alert");
+  res.status(418)
+		res.set("X-tea-preference", "Earl Gray");
+	res.send('teapot?? Are you a British Chap??');
 });
 
 app.listen(port, () => console.log(`JSON_B running on port: ${port}`));
