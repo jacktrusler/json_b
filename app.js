@@ -4,19 +4,6 @@ const port = 3000;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send({
-    name: "Jason Kent Bateman",
-    birthday: "14 January 1969",
-    birthplace: "Rye, New York",
-    nationality: "American",
-    ethnicity: "White",
-    zodiac: "Capricorn",
-    height: "5ft 11in",
-    weight: "167.5lbs",
-  });
-});
-
 app.post("/", (req, res) => {
   //make keys lowercase to case check
   const json = JSON.stringify(req.body);
@@ -31,7 +18,7 @@ app.post("/", (req, res) => {
     "jason" in jsonB ||
     "bateman" in jsonB
   ) {
-    res.send({ status: "ok", fact: "added" });
+    res.send({ status: "ok", fact: "added", info: "Thanks for the fact!", });
   } else {
     res.send({
       status: "ok",
@@ -39,6 +26,20 @@ app.post("/", (req, res) => {
       info: "to add a fact, send a JSON with 'fact' as a key",
     });
   }
+});
+
+
+app.get("/", (req, res) => {
+  res.send({
+    name: "Jason Kent Bateman",
+    birthday: "14 January 1969",
+    birthplace: "Rye, New York",
+    nationality: "American",
+    ethnicity: "White",
+    zodiac: "Capricorn",
+    height: "5ft 11in",
+    weight: "167.5lbs",
+  });
 });
 
 app.get("/something", (req, res) => {
