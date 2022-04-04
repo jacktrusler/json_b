@@ -1,6 +1,19 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  user: "tenzin",
+  database: "tenzin",
+  port: 5432,
+  host: "localhost",
+});
+
+pool.query("SELECT NOW()", (err, res) => {
+  console.log(err, res);
+  pool.end();
+});
 
 app.use(express.json());
 
