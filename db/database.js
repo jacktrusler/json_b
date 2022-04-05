@@ -4,6 +4,9 @@ const pool = new Pool();
 //CRUD Functions
 const getFacts = (req, res) => {
   pool.query("SELECT * FROM bateman_facts;", (err, dbres) => {
+	  if (err){
+		  throw err;
+	  }
     res.send(dbres.rows);
   });
 };
