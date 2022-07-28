@@ -1,11 +1,22 @@
-const { Pool } = require("pg");
-const pool = new Pool();
+const { Client } = require('pg')
+const client = new Client({
+  user: 'jack',
+  host: 'localhost',
+  database: 'jack',
+  password: 'benkitson',
+  port: 5432,
+})
 
+client.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 //CRUD Functions
 const getFacts = (req, res) => {
-  pool.query("SELECT * FROM bateman_facts;", (err, dbres) => {
+  client.query("SELECT * FROM bateman_facts;", (err, dbres) => {
 	  if (err){
-		  throw err;
+      res.send(err)
+      console.log(err);
 	  }
     res.send(dbres.rows);
   });
@@ -26,7 +37,7 @@ const postFact = (req, res) => {
       [jsonB.fact],
       (err, res) => {
         if (err) {
-          throw err;
+          throw err
         }
         console.log("db updated --- fact: ", jsonB.fact);
       }
@@ -57,7 +68,7 @@ const updateFact = (req, res) => {
       [jsonB.fact, id],
       (error, results) => {
         if (error) {
-          throw error;
+          throw error
         }
         res.status(200).send(`Fact modified with ID: ${id}`);
       }
