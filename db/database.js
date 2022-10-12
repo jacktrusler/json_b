@@ -39,10 +39,10 @@ const postFact = (req, res) => {
         if (err) {
           throw err
         }
-        console.log("db updated --- fact: ", jsonB.fact);
-        res.send({ status: 201, fact: "added", info: "Thanks for the fact!" });
+      console.log("db updated --- fact: ", jsonB.fact);
       }
     );
+    res.send({ status: 201, fact: "added", info: "Thanks for the fact!" });
   } else {
     res.send({
       status: 200,
