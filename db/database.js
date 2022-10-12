@@ -1,9 +1,9 @@
 const { Client } = require('pg')
 const client = new Client({
-  user: 'jack',
+  user: 'jsonbapp',
   host: 'localhost',
-  database: 'jack',
-  password: 'benkitson',
+  database: 'jsonb',
+  password: 'json bateman but its like american psycho and his name is actually patrick bateman, just a thought. it might be christian bale tho? idk i need that business card to be bone',
   port: 5432,
 })
 
@@ -32,7 +32,7 @@ const postFact = (req, res) => {
   const jsonB = JSON.parse(newJson);
 
   if ("fact" in jsonB) {
-    pool.query(
+    client.query(
       "INSERT INTO bateman_facts(fact) VALUES ($1);",
       [jsonB.fact],
       (err, res) => {
@@ -40,14 +40,14 @@ const postFact = (req, res) => {
           throw err
         }
         console.log("db updated --- fact: ", jsonB.fact);
+        res.send({ status: 201, fact: "added", info: "Thanks for the fact!" });
       }
     );
-    res.send({ status: 201, fact: "added", info: "Thanks for the fact!" });
   } else {
     res.send({
       status: 200,
       fact: "not added",
-      info: "to add a fact, send a JSON with 'fact' as a key",
+      info: "to add a fact, send JSON with 'fact' as a key",
     });
   }
 };
@@ -63,7 +63,7 @@ const updateFact = (req, res) => {
   const jsonB = JSON.parse(newJson);
 
   if ("fact" in jsonB) {
-    pool.query(
+    client.query(
       "UPDATE bateman_facts SET fact = $1 WHERE id = $2",
       [jsonB.fact, id],
       (error, results) => {
@@ -79,7 +79,7 @@ const updateFact = (req, res) => {
 const deleteFact = (req, res) => {
   const id = parseInt(req.params.id);
 
-  pool.query(
+  client.query(
     "DELETE FROM bateman_facts WHERE id = $1",
     [id],
     (error, results) => {
@@ -92,7 +92,7 @@ const deleteFact = (req, res) => {
 };
 module.exports = {
   query: (text, params, callback) => {
-    return pool.query(text, params, callback);
+    return client.query(text, params, callback);
   },
   getFacts,
   postFact,
