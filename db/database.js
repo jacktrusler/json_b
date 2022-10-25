@@ -14,10 +14,10 @@ client.connect(function(err) {
 //CRUD Functions
 const getFacts = (req, res) => {
   client.query("SELECT * FROM bateman_facts;", (err, dbres) => {
-	  if (err){
+    if (err){
       res.send(err)
       console.log(err);
-	  }
+    }
     res.send(dbres.rows);
   });
 };
@@ -39,10 +39,10 @@ const postFact = (req, res) => {
         if (err) {
           throw err
         }
-      console.log("db updated --- fact: ", jsonB.fact);
+        console.log("db updated --- fact: ", jsonB.fact);
+        res.send({ status: 201, fact: "added", info: "Thanks for the fact!" });
       }
     );
-    res.send({ status: 201, fact: "added", info: "Thanks for the fact!" });
   } else {
     res.send({
       status: 200,
