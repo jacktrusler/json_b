@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const db = require("./db/database");
+const ohioDb = require("./db/ohioBSDdb");
 
 //Middleware to parse requests
 app.use(express.json());
@@ -10,6 +11,8 @@ app.get("/facts", db.getFacts);
 app.post("/", db.postFact);
 app.put("/facts/:id", db.updateFact);
 app.delete("/facts/:id", db.deleteFact);
+app.post("/ohbsd_contact", ohioDb.postContact);
+app.get("/ohbsd_contact", ohioDb.getContact);
 
 //Homepage, display JSON Bateman
 app.get("/", (req, res) => {

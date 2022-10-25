@@ -1,9 +1,10 @@
 const { Client } = require('pg')
+require('dotenv').config();
 const client = new Client({
-  user: 'jsonbapp',
+  user: process.env.DB_USERNAME,
   host: 'localhost',
-  database: 'jsonb',
-  password: 'json bateman but its like american psycho and his name is actually patrick bateman, just a thought. it might be christian bale tho? idk i need that business card to be bone',
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
   port: 5432,
 })
 
