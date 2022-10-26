@@ -1,6 +1,5 @@
 const { Client } = require('pg')
 require('dotenv').config();
-console.log(process.env.DB_USERNAME);
 const client = new Client({
   user: process.env.DB_USERNAME,
   host: 'localhost',
@@ -26,14 +25,21 @@ const getContact = (req, res) => {
 const postContact = (req, res) => {
   //make keys lowercase to case check
   const b = req.body 
-  
   client.query(
-    `INSERT INTO ohbsd_contact(full_name, email, phone, message) 
-     VALUES ($1, $2, $3, $4);`,
-    [b.name, b.email, b.phone, b.message]
+    `INSERT INTO ohbsd_contact(full_name, email, phone, message, created_on) 
+     VALUES ($1, $2, $3, $4, $5);`,
+    [b.name, b.email, b.phone, b.message, b.date],
+    (error, response) => {
+      if (error) {
+        res.send({status: 400, message: error.detail})
+        throw (error)
+        console.log(error)
+      } else {
+        res.send({ status: 200, message: "contact added to database" });
+      }
+      client.end()
+    }
   )
-
-  res.send({ status: 200, something: "yo" });
 };
 
 module.exports = {
