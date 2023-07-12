@@ -1,18 +1,45 @@
 const express = require('express');
+const axios = require('axios');
 const app = express();
 const port = 3000;
-const db = require("./db/database");
-const ohioDb = require("./db/ohioBSDdb");
+require('dotenv').config();
+
+const apiKey = process.env.CMC_PRO_API_KEY;
+const FIVE_MINUTES = 1000 * 60 * 5;
+
+const axiosInstance = axios.create({
+  timeout: 3000,
+  headers: { 
+    "Content-Type": "application/json",
+    "X-CMC_PRO_API_KEY": apiKey,
+  }
+})
+
+let lastApiCallTime = 0;
+let cachedAvaxRes;
+
+async function fetchAvaxPrice() {
+  const response = await axiosInstance.get(
+    'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=AVAX'
+  )
+  return response;
+}
 
 //Middleware to parse requests
 app.use(express.json());
 
-app.get("/facts", db.getFacts);
-app.post("/", db.postFact);
-app.put("/facts/:id", db.updateFact);
-app.delete("/facts/:id", db.deleteFact);
-app.post("/ohbsd_contact", ohioDb.postContact);
-app.get("/ohbsd_contact", ohioDb.getContact);
+//Get Current Avax Price, cache for 5 minutes
+app.get("/avax_price", async (req, res) => {
+  if (Date.now() - lastApiCallTime > FIVE_MINUTES) {
+    const response = await fetchAvaxPrice();
+    lastApiCallTime = Date.now()
+    cachedAvaxRes = response.data.data
+  }
+  res.send({
+    price: cachedAvaxRes.AVAX.quote.USD.price,
+    fullResponse: cachedAvaxRes,
+  })
+});
 
 //Homepage, display JSON Bateman
 app.get("/", (req, res) => {
