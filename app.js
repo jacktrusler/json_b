@@ -1,6 +1,12 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 const app = express();
+
+//Middleware to parse requests
+app.use(express.json());
+app.use(cors())
+
 const port = 3000;
 require('dotenv').config();
 
@@ -33,9 +39,6 @@ async function fetchUsdcPrice() {
   )
   return response;
 }
-
-//Middleware to parse requests
-app.use(express.json());
 
 //Get Current Avax Price, cache for 5 minutes
 app.get("/avax_price", async (req, res) => {
