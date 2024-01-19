@@ -11,7 +11,7 @@ const port = 3000;
 require('dotenv').config();
 
 const apiKey = process.env.CMC_PRO_API_KEY;
-const ONE_HOUR = 1000 * 60 * 60;
+const FIVE_MINUTES = 1000 * 60 * 5;
 
 const axiosInstance = axios.create({
   timeout: 3000,
@@ -42,7 +42,7 @@ async function fetchUsdcPrice() {
 
 //Get Current Avax Price, cache for 5 minutes
 app.get("/avax_price", async (req, res) => {
-  if (Date.now() - lastAvaxCallTime > ONE_HOUR) {
+  if (Date.now() - lastAvaxCallTime > FIVE_MINUTES) {
     const response = await fetchAvaxPrice();
     lastAvaxCallTime = Date.now()
     cachedAvaxRes = response.data.data
@@ -55,7 +55,7 @@ app.get("/avax_price", async (req, res) => {
 
 //Get Current Usdc Price, cache for 5 minutes
 app.get("/usdc_price", async (req, res) => {
-  if (Date.now() - lastUsdcCallTime > ONE_HOUR) {
+  if (Date.now() - lastUsdcCallTime > FIVE_MINUTES) {
     const response = await fetchUsdcPrice();
     lastUsdcCallTime = Date.now()
     cachedUsdcRes = response.data.data
